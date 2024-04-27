@@ -56,7 +56,8 @@ sudo scutil --set HostName "$host_name"
 printf "%s\n" "Spoofed hostname to $host_name"
 
 # Spoof MAC address of Wi-Fi interface
-mac_address_prefix=$(networksetup -listallhardwareports | awk -v RS= '/en0/{print $NF}' | head -c 8)
+# mac_address_prefix=$(networksetup -listallhardwareports | awk -v RS= '/en0/{print $NF}' | head -c 8)
+mac_address_prefix=$(openssl rand -hex 3 | sed 's/\(..\)/\1:/g; s/.$//')
 mac_address_suffix=$(openssl rand -hex 3 | sed 's/\(..\)/\1:/g; s/.$//')
 mac_address=$(echo "$mac_address_prefix:$mac_address_suffix" | awk '{print tolower($0)}')
 networksetup -setairportpower en0 on
